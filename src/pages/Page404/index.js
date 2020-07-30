@@ -346,7 +346,9 @@ function Page404() {
     return (
         <div id="seletor">
             <h1>404 Page Not Found</h1>
-            <h1>Não achei o que você pediu &#128532;</h1>
+            <h1>Não achei o que você pediu
+                <span role="img" aria-label="sad"> &#128532;</span>
+            </h1>
             <h1>Mas achei isso:</h1>
             <canvas id="canvas" width="320" height="480"></canvas>
         </div>
