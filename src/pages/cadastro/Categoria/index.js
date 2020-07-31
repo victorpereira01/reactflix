@@ -29,15 +29,19 @@ function CadastroCategoria() {
   }
 
   useEffect(() => {
-    const URL = 'https://localhost:8080/categorias';
-    
-    fetch('URL')
+
+    const URL = window.location.hostname.includes('localhost')
+      ? 'https://localhost:8080/categorias'
+      : 'https://devflix-react.herokuapp.com/categorias';
+
+    fetch(URL)
       .then(async (res) => {
         const response = await res.json();
         setCategorias([
           ...response,
         ]);
-      });
+        return;
+      })
   }, []);
 
   return (
