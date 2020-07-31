@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
 
-function CadastroCategoria(){
+function CadastroCategoria() {
   const valoresIniciais = {
     nome: '',
     descricao: '',
     cor: '',
   }
-  
+
   const [categorias, setCategorias] = useState([]);
   const [values, setValues] = useState(valoresIniciais);
 
   function setValue(chave, valor) {
     setValues({
       ...values,
-      [chave]: valor, 
+      [chave]: valor,
     })
   }
 
@@ -28,11 +28,23 @@ function CadastroCategoria(){
     );
   }
 
+  useEffect(() => {
+    const URL = 'https://localhost:8080/categorias';
+    
+    fetch('URL')
+      .then(async (res) => {
+        const response = await res.json();
+        setCategorias([
+          ...response,
+        ]);
+      });
+  }, []);
+
   return (
     <PageDefault>
-      <h1>Cadastro de Categoria</h1>
+      <h1>Cadastro de Categoria: {values.nome}</h1>
 
-      <form onSubmit={function HandleSubmit(info){
+      <form onSubmit={function HandleSubmit(info) {
         info.preventDefault();
         setCategorias([
           ...categorias,
@@ -43,7 +55,7 @@ function CadastroCategoria(){
       }}>
 
         <FormField
-          label="Nome da Categoria: "
+          label="Nome da Categoria"
           type="text"
           name="nome"
           value={values.nome}
@@ -51,7 +63,7 @@ function CadastroCategoria(){
         />
 
         <FormField
-          label="Descrição: "
+          label="Descrição"
           type="textarea"
           name="descricao"
           value={values.descricao}
@@ -59,7 +71,7 @@ function CadastroCategoria(){
         />
 
         <FormField
-          label="Cor: "
+          label="Cor"
           type="color"
           name="cor"
           value={values.cor}
@@ -70,6 +82,12 @@ function CadastroCategoria(){
           Cadastrar
         </button>
       </form>
+
+      {categorias.length === 0 && (
+        <div>
+          Loading...
+        </div>
+      )}
 
       <ul>
         {categorias.map((categoria, indice) => {
