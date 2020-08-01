@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
+import Button from '../../../components/Button';
 import useForm from '../../../hooks/useForm';
 
 
@@ -38,6 +39,7 @@ function CadastroCategoria() {
 
       <form onSubmit={function HandleSubmit(info) {
         info.preventDefault();
+        console.log(values);
         setCategorias([
           ...categorias,
           values
@@ -70,9 +72,9 @@ function CadastroCategoria() {
           onChange={handleChange}
         />
 
-        <button>
+        <Button>
           Cadastrar
-        </button>
+        </Button>
       </form>
 
       {categorias.length === 0 && (
