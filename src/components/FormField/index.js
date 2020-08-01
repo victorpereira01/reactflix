@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 
 const FormFieldWrapper = styled.div`
@@ -59,46 +58,50 @@ const Input = styled.input`
     transform: scale(.6) translateY(-10px);
   }
   ${({ value }) => {
-        const hasValue = value.length > 0;
-        return hasValue && css`
+    const hasValue = value.length > 0;
+    return hasValue && css`
         &:not([type='color']) + ${Label.Text} {
           transform: scale(.6) translateY(-10px);
         }
       `;
-    }
-    }
+  }
+  }
 `;
 
 function FormField({ label, type, name, value, onChange }) {
-    const hasValue = Boolean(value.lenght);
+  const hasValue = Boolean(value.lenght);
 
-    return (
-        <FormFieldWrapper>
-            <Label htmlFor={name}>
-                {type === 'textarea' ? (
-                    <Input
-                        as={'textarea'}
-                        type={type}
-                        value={value}
-                        hasValue={hasValue}
-                        name={name}
-                        onChange={onChange}
-                    />
-                ) : (
-                        <Input
-                            type={type}
-                            value={value}
-                            name={name}
-                            hasValue={hasValue}
-                            onChange={onChange}
-                        />
-                    )}
-                <Label.Text>
-                    {label} :
-                </Label.Text>
-            </Label>
-        </FormFieldWrapper>
-    )
+  return (
+    <FormFieldWrapper>
+      <Label htmlFor={name}>
+        {type === 'textarea' ? (
+          <Input
+            as={'textarea'}
+            type={type}
+            value={value}
+            hasValue={hasValue}
+            name={name}
+            onChange={onChange}
+          />
+        ) : (
+            <Input
+              type={type}
+              value={value}
+              name={name}
+              hasValue={hasValue}
+              onChange={onChange}
+              autoComplete="off"
+              list={`suggestionFor_${name}`}
+            />
+          )}
+
+        <Label.Text>
+          {label} :
+        </Label.Text>
+
+      </Label>
+    </FormFieldWrapper>
+  )
 }
 
 export default FormField;

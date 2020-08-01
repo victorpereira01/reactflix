@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
+import useForm from '../../../hooks/useForm';
+
 
 function CadastroCategoria() {
   const valoresIniciais = {
@@ -11,37 +13,23 @@ function CadastroCategoria() {
     cor: '',
   }
 
+  const { handleChange, values, clearForm } = useForm(valoresIniciais);
+
   const [categorias, setCategorias] = useState([]);
-  const [values, setValues] = useState(valoresIniciais);
-
-  function setValue(chave, valor) {
-    setValues({
-      ...values,
-      [chave]: valor,
-    })
-  }
-
-  function handleChange(infosDoEvento) {
-    setValue(
-      infosDoEvento.target.getAttribute('name'),
-      infosDoEvento.target.value
-    );
-  }
 
   useEffect(() => {
-
-    const URL = window.location.hostname.includes('localhost')
-      ? 'https://localhost:8080/categorias'
-      : 'https://devflix-react.herokuapp.com/categorias';
-
-    fetch(URL)
-      .then(async (res) => {
-        const response = await res.json();
-        setCategorias([
-          ...response,
-        ]);
-        return;
-      })
+    if (window.location.href.includes('localhost')) {
+      const URL = 'http://localhost:8080/categorias';
+      fetch(URL)
+        .then(async (res) => {
+          if (res.ok) {
+            const response = await res.json();
+            setCategorias(response);
+            return;
+          }
+          throw new Error('Não foi possível pegar os dados');
+        })
+    }
   }, []);
 
   return (
@@ -55,7 +43,7 @@ function CadastroCategoria() {
           values
         ]);
 
-        setValues(valoresIniciais)
+        clearForm();
       }}>
 
         <FormField
@@ -94,10 +82,10 @@ function CadastroCategoria() {
       )}
 
       <ul>
-        {categorias.map((categoria, indice) => {
+        {categorias.map((categoria) => {
           return (
-            <li key={`${categoria}${indice}`}>
-              {categoria.nome}
+            <li key={`${categoria.titulo}`}>
+              {categoria.titulo}
             </li>
           )
         })}
